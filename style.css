@@ -1,0 +1,185 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+#t{
+  position: relative;
+  bottom:10px;
+  margin-left:10px;
+  margin-top: 15px;
+  color: green;
+  font-size:17px;
+}
+img{
+  margin-top:10px;
+  margin-left:5px;
+}
+#jee{
+  margin-left:118px;
+  position: relative;
+  bottom: 4.7px;
+}
+#adv{
+  margin-left:118px;
+  position: relative;
+  top:7px;
+}
+#madras{
+  margin-left:10px;
+  margin-top: 15px;
+  position: relative;
+  bottom:34px;
+  margin-right:47px;
+  right: 0;
+  color: green;
+  font-size:17px;
+  font-size: 15px;
+}
+#iit{
+  font-size: 15px;
+  position: relative;
+  left: 70px;
+  bottom:29.5578px;
+}
+#org{
+  font-size: 15px;
+  position: relative;
+  left: 70px;
+  bottom:20px;
+  color: #fd6a11;
+}
+.head{
+  background-color: #00b0b00f;
+  height:200px;
+}
+ul{
+  background-color: #148019;
+  height:35px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  color: #fff;
+}
+ul p{
+  margin-left: 10px;
+}
+#picture{
+  height:30vh;
+  padding: 0;
+  margin: 0;
+}
+#text{
+  font-size: 16px;
+  width:90%;
+  margin-left:5% ;
+  /*color:#cb5400 ;*/
+  color: #610801cb;
+}
+#imp{
+  font-size:18px;
+ /* margin-left:18px;*/
+ margin-left:5%;
+}
+#line{
+  height:5px;
+  width:55px;
+  background-color: #1f670e;
+  margin-top: 10px;
+/*  margin-left:18px;*/
+margin-left: 5%;
+}
+#lk{
+  margin-top:8px;
+  height:160px;
+  margin-left:5%;
+  margin-right: 5%;
+  border:1px solid #31951a ;
+  border-radius: 6px;
+}
+#lik{
+  position: relative;
+  top: 7px;
+  font-size: 13.5px;
+  margin-left: 10px;
+  color: #31951a;
+}
+#lk p{
+  font-size:13.5px;
+  margin-top:28px;
+  margin-left:10px;
+}
+#lk b a{
+  text-decoration: none;
+  color: #610801cb;
+}
+#lk h3{
+  font-size:14px;
+  position:relative;
+   left:80px;
+  bottom: 10px;
+  color: #fe1515;
+}
+#new{
+  margin-left: 10px;
+ /* position:absolute;*/
+ /* right: 100px;
+/*  left: 218px;
+  bottom:17px;*/
+  font-size: 24px;
+  font-family: cursive;
+  animation: color 0.7s linear 0s infinite normal;
+}
+@keyframes color{
+  from{
+    color: yellow;
+  }
+  to{
+    color:red;
+  }
+}
+#all{
+  display: flex;
+  justify-content: center;
+  margin-top:8px;
+  height:30px;
+  margin-left:5%;
+  margin-right: 5%;
+  border:1px solid #31951a ;
+  border-radius: 6px;
+  padding-top: 10px;
+}
+#all a{
+/*  margin-left: 15px;*/
+  text-decoration: none;
+  font-size: 13px;
+  color:#31951a ;
+}
+h2{
+ /* margin-left: 18px;*/
+ margin-left: 5%;
+ font-size: 18px;
+}
+.implk{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  margin-top:8px;
+  height:190px;
+  margin-left:5%;
+  margin-right: 5%;
+  border:1px solid #31951a ;
+  border-radius: 6px;
+}
+#dotted{
+  border:0.2px dotted  rgba(0,0,0,0.7);
+}
+h4 {
+  margin-top: 10px;
+  text-align: center;
+  font-size:14px;
+}
+h4 a{
+  text-decoration: none;
+  color: #31951a;
+}
