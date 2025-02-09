@@ -49,6 +49,7 @@ img{
   color: #fd6a11;
 }
 .head{
+  text-align:center;
   background-color:rgba(244,252,254,0.807);
   height:200px;
 }
