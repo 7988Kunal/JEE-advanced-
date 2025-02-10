@@ -3,10 +3,10 @@
   margin: 0;
 }
 #t{
-  position: relative;
+ /* position: relative;
   bottom:10px;
   margin-left:10px;
-  margin-top: 15px;
+  margin-top: 15px;*/
   color:blue;
   font-size:17px;
 }
@@ -15,14 +15,14 @@ img{
   margin-left:5px;
 }
 #jee{
-  margin-left:118px;
+  /*margin-left:118px;
   position: relative;
-  bottom: 4.7px;
+  bottom: 4.7px;*/
 }
 #adv{
-  margin-left:118px;
+  /*margin-left:118px;
   position: relative;
-  top:7px;
+  top:7px;*/
 }
 #madras{
   margin-left:10px;
@@ -49,7 +49,6 @@ img{
   color: #fd6a11;
 }
 .head{
-  text-align:center;
   background-color:rgba(244,252,254,0.807);
   height:200px;
 }
@@ -349,4 +348,50 @@ h4 a{
   /*color:#07b098;*/
   color:rgb(51,82,231);
   }
+.string{
+/*  background-color:red;*/
+  height:70px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-evenly;
+  justify-items:center;
+  align-content:center;
+  align-items:center;
+}
 
+
+
+
+
+@media (min-width:768px) and (max-width:1250px){
+ .head{
+  display:flex;
+  justify-content:space-evenly;
+  align-content:center;
+  align-items:center;
+  height:90px;
+}  
+#jee{
+  display:flex;
+  flex-direction:column;
+}
+}
+@media (min-width:768px) and (max-width:1250px){
+}
+@media (max-width:330px){
+}
+@media (min-width:330px) and (max-width:359px){
+}
+@media (min-width:1251px){
+  .head{
+  display:flex;
+  justify-content:space-evenly;
+  align-content:center;
+  align-items:center;
+  height:90px;
+}
+  #jee{
+  display:flex;
+  flex-direction:column;
+}
+}
