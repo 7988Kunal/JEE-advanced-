@@ -8,8 +8,8 @@
 }
 .scorepage{
   background-color: #fff;
-  width:90%;
-  margin-left:5%;
+  width:100%;
+  /*margin-left:5%;*/
   height:1050px;
   box-shadow:-1px -1px 10px 3px #d2d2f9f8;
   border-radius:10px;
