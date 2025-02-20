@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET UG Scorecard Login</title>
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /*background: linear-gradient(135deg, #007bff, #6610f2);
+            padding: 20px;*/
+            background-color:rgba(223,223,223,0.942);
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .captcha-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .refresh-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .refresh-btn:hover {
+            background: #0056b3;
+        }
+
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>NEET UG Scorecard Login</h2>
+        <input type="text" id="appNumber" placeholder="Application Number">
+        <input type="password" id="password" placeholder="Password">
+        <input type="date" id="dob" placeholder="Date of Birth">
+
+        <div class="captcha-box">
+            <span id="captchaText"></span>
+            <button class="refresh-btn" onclick="generateCaptcha()">↻</button>
+        </div>
+
+        <input type="text" id="captchaInput" placeholder="Enter CAPTCHA">
+
+        <button class="btn" onclick="validateLogin()">Login</button>
+        <p class="error" id="errorMsg"></p>
+    </div>
+
+    <script>
+        function generateCaptcha() {
+            let captcha = Math.random().toString(36).substring(2, 8).toUpperCase();
+            document.getElementById("captchaText").innerText = captcha;
+        }
+
+        function validateLogin() {
+            let appNumber = document.getElementById("appNumber").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let dob = document.getElementById("dob").value;
+            let captchaInput = document.getElementById("captchaInput").value.trim();
+            let captchaText = document.getElementById("captchaText").innerText;
+            let errorMsg = document.getElementById("errorMsg");
+
+            // Application Number Validation (Must be 12 digits and start with "25")
+            let appNumberPattern = /^25\d{10}$/;
+            if (!appNumberPattern.test(appNumber)) {
+                errorMsg.innerText = "Application Number must be 12 digits and start with '25'.";
+                return;
+            }
+
+            // Date of Birth Validation (Must be before January 2, 2008)
+            let dobDate = new Date(dob);
+            let maxDob = new Date("2008-01-02");
+            if (dobDate >= maxDob) {
+                errorMsg.innerText = "Date of Birth must be before January 2, 2008.";
+                return;
+            }
+
+            // CAPTCHA Validation
+            if (captchaInput !== captchaText) {
+                errorMsg.innerText = "Incorrect CAPTCHA!";
+                generateCaptcha();
+                return;
+            }
+
+            // Success Message & Redirect
+            errorMsg.style.color = "green";
+            errorMsg.innerText = "Login successful! Redirecting...";
+            setTimeout(() => {
+                window.location.href = "Test.html"; // Redirect (Change to backend URL)
+            }, 2000);
+        }
+
+        window.onload = generateCaptcha;
+    </script>
+
+</body>
+</html>
