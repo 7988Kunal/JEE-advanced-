@@ -143,10 +143,10 @@
             let captchaText = document.getElementById("captchaText").innerText;
             let errorMsg = document.getElementById("errorMsg");
 
-            // Application Number Validation (Must be 12 digits and start with "25")
-            let appNumberPattern = /^25\d{10}$/;
+            // Application Number Validation (Must be 12 digits and start with "M")
+            let appNumberPattern = /^M\d{12}$/;
             if (!appNumberPattern.test(appNumber)) {
-                errorMsg.innerText = "Application Number must be 12 digits and start with '25'.";
+                errorMsg.innerText = "Application Number must be 12 digits and start with 'M'.";
                 return;
             }
 
@@ -169,7 +169,7 @@
             errorMsg.style.color = "green";
             errorMsg.innerText = "Login successful! Redirecting...";
             setTimeout(() => {
-                window.location.href = "Test.html"; // Redirect (Change to backend URL)
+                window.location.href = "index.html"; // Redirect (Change to backend URL)
             }, 2000);
         }
 
