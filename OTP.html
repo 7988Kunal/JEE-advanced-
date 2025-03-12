@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send OTP to Mobile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Send OTP</h2>
+        <input type="text" id="phoneNumber" placeholder="Enter Phone Number">
+        <button onclick="sendOTP()">Send OTP</button>
+
+        <input type="text" id="otpInput" placeholder="Enter OTP" style="display: none;">
+        <button onclick="verifyOTP()" id="verifyBtn" style="display: none;">Verify OTP</button>
+        
+        <p id="status"></p>
+    </div>
+
+    <script>
+        let generatedOTP = null;
+
+        function sendOTP() {
+            let phoneNumber = document.getElementById("phoneNumber").value.trim();
+
+            if (!phoneNumber || phoneNumber.length < 10) {
+                document.getElementById("status").innerText = "❌ Enter a valid phone number!";
+                return;
+            }
+
+            generatedOTP = Math.floor(100000 + Math.random() * 900000);  // Generate 6-digit OTP
+            let apiKey = "YOUR_FAST2SMS_API_KEY";  // Replace with actual Fast2SMS API key
+
+            fetch("https://www.fast2sms.com/dev/bulkV2", {
+                method: "POST",
+                headers: {
+                    "authorization": apiKey,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: `Your OTP is ${generatedOTP}`,
+                    language: "english",
+                    route: "q",
+                    numbers: phoneNumber
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.return) {
+                    document.getElementById("status").innerText = "✅ OTP Sent Successfully!";
+                    document.getElementById("otpInput").style.display = "block";
+                    document.getElementById("verifyBtn").style.display = "block";
+                } else {
+                    document.getElementById("status").innerText = "❌ Error Sending OTP!";
+                }
+            })
+            .catch(error => {
+                document.getElementById("status").innerText = "❌ Error: " + error;
+            });
+        }
+
+        function verifyOTP() {
+            let userOTP = document.getElementById("otpInput").value.trim();
+
+            if (userOTP == generatedOTP) {
+                document.getElementById("status").innerText = "✅ OTP Verified Successfully!";
+            } else {
+                document.getElementById("status").innerText = "❌ Invalid OTP!";
+            }
+        }
+    </script>
+
+</body>
+</html>
