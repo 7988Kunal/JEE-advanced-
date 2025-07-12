@@ -99,7 +99,8 @@ margin-left: 5%;
 #lk{
   margin-top:8px;
   /*height:300px;*/
-  height:200px;
+  /*height:200px;*/
+  padding:10px;
   margin-left:5%;
   margin-right: 5%;
   /*border:1px solid #31951a ;*/
