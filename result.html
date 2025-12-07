@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Maharshi Dayanand University - Result Portal</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+body { background: linear-gradient(135deg, #e8f0ff, #ffffff); padding: 20px; min-height: 100vh; }
+.watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); font-size: 100px; opacity: 0.07; font-weight: 900; color: #000; pointer-events: none; z-index: -1; }
+.top-marquee { background: #b71c1c; color: #fff; padding: 10px; text-align: center; font-size: 18px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.card { max-width: 460px; margin: 20px auto; background: rgba(255,255,255,0.97); padding: 30px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
+h2 { text-align: center; color: #b71c1c; margin-bottom: 20px; }
+label { font-weight: 600; color: #333; display: block; margin-top: 10px; }
+input, select, textarea, button {
+    width: 100%; padding: 14px; margin: 8px 0 18px; border: none; border-radius: 10px; background: #f1f4ff; font-size: 15px;
+}
+input:focus, select:focus, textarea:focus { outline: none; background: #e0e7ff; }
+button {
+    background: #c62828; color: white; font-weight: 600; cursor: pointer;
+}
+button:hover { background: #a01c1c; }
+.captcha-area { display: flex; gap: 10px; align-items: center; }
+.captcha-box { flex: 1; background: #000; color: #00ff6a; font-size: 24px; text-align: center; padding: 12px; border-radius: 10px; letter-spacing: 5px; font-weight: bold; user-select: none; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+th, td { border: 1px solid #999; padding: 12px; text-align: left; }
+th { background: #ffebee; }
+.result-pass { color: green; font-size: 24px; font-weight: bold; text-align: center; margin: 20px 0; }
+.hidden { display: none; }
+@media (max-width: 600px) { .card { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<div class="watermark">MDU ROHTAK</div>
+
+<div class="top-marquee">
+    <marquee>MAHARSHI DAYANAND UNIVERSITY, ROHTAK - RESULT PORTAL (2025)</marquee>
+</div>
+
+<!-- ===================== STUDENT LOGIN ===================== -->
+<div id="studentLogin" class="card">
+    <h2>Student Result Login</h2>
+    <label>Registration Number</label>
+    <input type="text" id="regNo" placeholder="e.g. 2418380309">
+
+    <label>Date of Birth</label>
+    <input type="date" id="dob">
+
+    <label>Captcha</label>
+    <div class="captcha-area">
+        <div id="captchaText" class="captcha-box"></div>
+        <button type="button" onclick="generateCaptcha()">Refresh</button>
+    </div>
+    <input type="text" id="captchaInput" placeholder="Enter captcha">
+
+    <button onclick="studentLogin()">View Result</button>
+</div>
+
+<!-- ===================== ADMIN LOGIN ===================== -->
+<div id="adminLogin" class="card hidden">
+    <h2>Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Admin Email (vats_kunal@admin.com)">
+    <input type="password" id="adminPass" placeholder="Password (Jpm7988@)">
+    <button onclick="adminLogin()">Login as Admin</button>
+    <p style="text-align:center; margin-top:15px;">
+        <a href="#" onclick="showStudentLogin()">Back to Student Login</a>
+    </p>
+</div>
+
+<!-- ===================== RESULT DISPLAY ===================== -->
+<div id="resultDisplay"></div>
+
+<!-- ===================== ADMIN PANEL ===================== -->
+<div id="adminPanel" class="hidden"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAz-yo7PmFo0eFyzfjQwCP3yiB5GqqpTp0",
+  authDomain: "studentdashboard-681a8.firebaseapp.com",
+  projectId: "studentdashboard-681a8",
+  storageBucket: "studentdashboard-681a8.firebasestorage.app",
+  messagingSenderId: "171483691299",
+  appId: "1:171483691299:web:f2bc4e00b696c55b4cf496",
+  measurementId: "G-RVFB0Z9TFS"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let captchaValue = "";
+function generateCaptcha() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    captchaValue = "";
+    for (let i = 0; i < 6; i++) {
+        captchaValue += chars[Math.floor(Math.random() * chars.length)];
+    }
+    document.getElementById("captchaText").textContent = captchaValue;
+}
+generateCaptcha();
+
+async function studentLogin() {
+    const reg = document.getElementById("regNo").value.trim();
+    const dob = document.getElementById("dob").value;
+    const cap = document.getElementById("captchaInput").value.trim();
+
+    if (!reg || !dob || !cap) return alert("All fields are required!");
+    if (cap !== captchaValue) return alert("Wrong captcha!");
+
+    try {
+        const docRef = doc(db, "results", reg);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.dob === dob) {
+                showResult(data, reg);
+            } else {
+                alert("Date of birth does not match!");
+            }
+        } else {
+            alert("Registration number not found!");
+        }
+    } catch (e) {
+        alert("Error fetching result. Try again.");
+    }
+}
+
+function showResult(data, reg) {
+    document.getElementById("studentLogin").style.display = "none";
+    document.getElementById("adminLogin").style.display = "none";
+    document.getElementById("resultDisplay").innerHTML = `
+        <div class="card" style="max-width:800px;">
+            <h2 style="text-align:center; color:#b71c1c;">MAHARSHI DAYANAND UNIVERSITY, ROHTAK</h2>
+            <p style="text-align:center;">(A State University established under Haryana Act No. XXV of 1975)</p>
+            <h3 style="text-align:center;">Result</h3>
+            <p style="text-align:right;">Date of result declaration: ${data.resultDate || '25/03/2025'}</p>
+            <hr>
+            <h3>Student Details</h3>
+            <p><b>Reg. No.:</b> ${reg}</p>
+            <p><b>Roll No.:</b> ${data.rollNo || 'N/A'}</p>
+            <p><b>Student Name:</b> ${data.name}</p>
+            <p><b>Father Name:</b> ${data.fatherName}</p>
+            <p><b>Sem/Part:</b> ${data.semPart}</p>
+            <p><b>College Code:</b> ${data.collegeCode}</p>
+            <p><b>Course:</b> ${data.course}</p>
+
+            <h3>Obtained Marks Details</h3>
+            <table>
+                <tr><th>Subject</th><th>Theory Marks1</th><th>Theory Marks2</th><th>Theory Marks3</th><th>Sessional Marks</th><th>Practical Marks</th><th>Practical Sessional</th><th>Total</th></tr>
+                ${data.marks.map(m => `
+                    <tr>
+                        <td>${m.code}${m.name ? ' - ' + m.name : ''}</td>
+                        <td>${m.t1 || '-'}</td>
+                        <td>${m.t2 || '-'}</td>
+                        <td>${m.t3 || '-'}</td>
+                        <td>${m.sess || '-'}</td>
+                        <td>${m.prac || '-'}</td>
+                        <td>${m.pracSess || '-'}</td>
+                        <td><b>${m.total}</b></td>
+                    </tr>
+                `).join('')}
+                <tr><th colspan="7" style="text-align:right;">Grand Total</th><th>${data.grandTotal}</th></tr>
+            </table>
+
+            <div class="result-pass">Result: ${data.result}</div>
+            <p style="font-size:12px; text-align:justify;">NOTE: In R.L.A./R.L.E. cases/Result Late due to non-receipt/non-eligibility of A.W.) the student concerned should submit details viz. name of examination, name of subject (where A.W. has indicated) along with a copy of the downloaded result to the concerned Result Branch within 10 days positively, failing which he/she will be treated 'Absent' in the said paper and the result finalized accordingly.</p>
+
+            <button onclick="window.print()" style="background:#1b5e20;">Print / Download Result</button>
+            <button onclick="location.reload()" style="margin-left:10px; background:#c62828;">Back</button>
+        </div>
+    `;
+}
+
+function showAdminLogin() {
+    document.getElementById("studentLogin").classList.add("hidden");
+    document.getElementById("adminLogin").classList.remove("hidden");
+}
+
+function showStudentLogin() {
+    document.getElementById("adminLogin").classList.add("hidden");
+    document.getElementById("studentLogin").classList.remove("hidden");
+}
+
+async function adminLogin() {
+    const email = document.getElementById("adminEmail").value;
+    const pass = document.getElementById("adminPass").value;
+
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        // Success
+    } catch (e) {
+        if (e.code === 'auth/user-not-found' && email === 'vats_kunal@admin.com' && pass === 'Jpm7988@') {
+            try {
+                await createUserWithEmailAndPassword(auth, email, pass);
+                await signInWithEmailAndPassword(auth, email, pass);
+                alert("Admin account created and logged in successfully.");
+            } catch (createErr) {
+                alert("Error creating admin account: " + createErr.message);
+            }
+        } else {
+            alert("Login failed: " + e.message);
+        }
+    }
+}
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        document.getElementById("adminLogin").style.display = "none";
+        document.getElementById("studentLogin").style.display = "none";
+        await loadAdminPanel();
+    } else {
+        if (document.getElementById("adminPanel").classList.contains("hidden")) return;
+        showStudentLogin();
+    }
+});
+
+async function loadAdminPanel() {
+    const panel = document.getElementById("adminPanel");
+    panel.classList.remove("hidden");
+    panel.innerHTML = `
+        <div class="card" style="max-width:1000px;">
+            <h2>Admin Panel - Manage Results</h2>
+            <button onclick="signOut(auth).then(() => location.reload())" style="background:#c62828; width:auto; padding:10px;">Logout</button>
+            <hr>
+            <h3>Add / Edit Student Result</h3>
+            <input type="text" id="aReg" placeholder="Registration No">
+            <input type="text" id="aRoll" placeholder="Roll No">
+            <input type="text" id="aName" placeholder="Student Name">
+            <input type="text" id="aFather" placeholder="Father Name">
+            <input type="date" id="aDob" placeholder="Date of Birth">
+            <input type="text" id="aSemPart" placeholder="Sem/Part e.g. 1 (DEC - 2024)">
+            <input type="text" id="aCollegeCode" placeholder="College Code e.g. 3402">
+            <input type="text" id="aCourse" placeholder="Course e.g. B.TECH (CSE - Artificial Intelligence and Machine Learning) (B101)">
+            <input type="text" id="aResultDate" placeholder="Result Date e.g. 25/03/2025">
+            <textarea id="aMarksJson" placeholder='Marks JSON e.g. [{"code":"BSC-MTH-103G","t1":"062","t2":"","t3":"","sess":"022","prac":"","pracSess":"","total":"084"}, ...]' style="height:200px;"></textarea>
+            <input type="number" id="aGrandTotal" placeholder="Grand Total">
+            <select id="aResult"><option>PASS</option><option>FAIL</option><option>REAPPEAR</option></select>
+            <button onclick="saveResult()">Save / Update Result</button>
+
+            <h3 style="margin-top:30px;">Existing Records</h3>
+            <div id="recordsList"></div>
+        </div>
+    `;
+    await loadAllRecords();
+}
+
+async function loadAllRecords() {
+    const list = document.getElementById("recordsList");
+    list.innerHTML = "<p>Loading...</p>";
+    const snapshot = await getDocs(collection(db, "results"));
+    let html = "";
+    snapshot.forEach(doc => {
+        const d = doc.data();
+        html += `
+            <div style="border:1px solid #ccc; padding:15px; margin:10px 0; border-radius:8px;">
+                <b>${doc.id}</b> - ${d.name} (${d.result})
+                <button onclick="editRecord('${doc.id}')" style="background:#00695c; margin-left:10px;">Edit</button>
+                <button onclick="deleteRecord('${doc.id}')" style="background:#c62828;">Delete</button>
+            </div>`;
+    });
+    list.innerHTML = html || "<p>No records found.</p>";
+}
+
+window.editRecord = async (reg) => {
+    const docRef = doc(db, "results", reg);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+        const d = snap.data();
+        document.getElementById("aReg").value = reg;
+        document.getElementById("aRoll").value = d.rollNo || '';
+        document.getElementById("aName").value = d.name;
+        document.getElementById("aFather").value = d.fatherName;
+        document.getElementById("aDob").value = d.dob;
+        document.getElementById("aSemPart").value = d.semPart;
+        document.getElementById("aCollegeCode").value = d.collegeCode;
+        document.getElementById("aCourse").value = d.course;
+        document.getElementById("aResultDate").value = d.resultDate;
+        document.getElementById("aMarksJson").value = JSON.stringify(d.marks, null, 2);
+        document.getElementById("aGrandTotal").value = d.grandTotal;
+        document.getElementById("aResult").value = d.result;
+    }
+}
+
+window.deleteRecord = async (reg) => {
+    if (confirm("Delete this result permanently?")) {
+        await deleteDoc(doc(db, "results", reg));
+        loadAllRecords();
+    }
+}
+
+window.saveResult = async () => {
+    const reg = document.getElementById("aReg").value.trim();
+    if (!reg) return alert("Registration number required!");
+
+    let marks;
+    try {
+        marks = JSON.parse(document.getElementById("aMarksJson").value);
+    } catch (e) {
+        return alert("Invalid JSON in marks field!");
+    }
+
+    const resultData = {
+        rollNo: document.getElementById("aRoll").value,
+        name: document.getElementById("aName").value,
+        fatherName: document.getElementById("aFather").value,
+        dob: document.getElementById("aDob").value,
+        semPart: document.getElementById("aSemPart").value,
+        collegeCode: document.getElementById("aCollegeCode").value,
+        course: document.getElementById("aCourse").value,
+        resultDate: document.getElementById("aResultDate").value,
+        marks: marks,
+        grandTotal: parseInt(document.getElementById("aGrandTotal").value),
+        result: document.getElementById("aResult").value,
+        updatedAt: new Date().toISOString()
+    };
+
+    try {
+        await setDoc(doc(db, "results", reg), resultData);
+        alert("Result saved successfully!");
+        loadAllRecords();
+    } catch (e) {
+        alert("Error saving: " + e.message);
+    }
+}
+
+// Secret admin access via URL ?admin=1
+if (location.search.includes('admin=1')) {
+    showAdminLogin();
+}
+</script>
+</body>
+</html>
