@@ -79,7 +79,9 @@ ul p{
   width:90%;
   margin-left:5% ;
   /*color:#cb5400 ;*/
-  color: #610801cb;
+  /*color: #610801cb;*/
+  font-weight:bold;
+  
 }
 #imp{
   font-size:18px;
@@ -404,4 +406,4 @@ h4 a{
   display:flex;
   flex-direction:column;
 }
-             }
+}
