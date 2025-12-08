@@ -495,11 +495,11 @@ h4 a{
     font-size:1rem;
 }
 #org-inst-logo{
-  height:120px;
-  width:120px;
+  height:100px;
+  width:100px;
   position: relative;
   top:2rem;
-  right:1rem;
+  right:3.5rem;
 }
 .string2{
     font-size:1.1rem;
@@ -508,19 +508,19 @@ h4 a{
 #madras{
     position: relative;
     bottom:3.4rem;
-    left:1rem;
+    right:1rem;
     font-size:1rem;
 }
 #iit{
     position: relative;
     bottom:3rem;
-    left:7.5rem;
+    left:4rem;
     font-size:1.1rem;
 }
 #org{
     position: relative;
     bottom:2rem;
-    left:9rem;
+    left:5rem;
     font-size:1rem;
 }
 .head2{
