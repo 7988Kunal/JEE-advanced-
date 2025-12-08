@@ -485,11 +485,11 @@ h4 a{
   justify-content:left;
 }
 #logo-adv{
-  height:100px;
-  width:200px;
+  height:75px;
+  width:150px;
 }
 .string{
-    font-size:1.3rem;
+    font-size:1.1rem;
 }
 #t{
     font-size:1rem;
@@ -685,5 +685,4 @@ h4 a{
 .copyright{
     font-size:1.3rem;
 }
-
 }
