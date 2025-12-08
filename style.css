@@ -542,4 +542,8 @@ h4 a{
   display:flex;
   flex-direction:column;
 }
+#footer00{
+  display:flex;
+  justify-content:left;
+}
 }
