@@ -227,21 +227,24 @@ h4 a{
   margin-top:10px;
 }
 #envelope p{
-  padding-left:10px;
+  padding-left:3px;
+  font-size:10px;
 }
 #envelope section{
   padding-left:5px;
+  font-weight:bold;
+  font-size:14px;
 }
 .copyright{
-  background-color:#ffdd;
+  background-color:#ebeceeaa;
   color:red;
-  font-size:16px;
+  font-size:12px;
   display:flex;
   justify-content:center;
   align-content:center;
   align-items:center;
   justify-items:center;
-  border:0.2px solid black;
+  border:0.2px solid #ffd;
   height:40px;
 }
 
@@ -371,7 +374,139 @@ h4 a{
   align-content:center;
   align-items:center;
 }
+/* Slider Box */
+.slider-container {
+  margin-top: 15px;
+  border: 2px solid #003366;
+  padding: 20px;
+  margin:30px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
 
+/* All slides container (moves left-right) */
+.slides {
+  display: flex;
+  transition: transform 0.45s ease-in-out;
+}
+
+/* 2 columns × 3 rows layout */
+.slide {
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 16px;
+  grid-column-gap: 16px;
+  padding: 5px;
+}
+
+/* Cards - smaller + more padding */
+.card {
+  background: #ffffff;
+  padding: 14px 10px;
+  border-radius: 14px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* Logo */
+.card img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+/* Text */
+.card p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b552d;
+}
+
+/* Navigation Buttons */
+.nav-btns {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.nav-btns button {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border: 2px solid #0b552d;
+  background: #ffffff;
+  border-radius: 8px;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.nav-btns button:hover {
+  background: #0b552d;
+  color: #fff;
+}
+
+/* ======================= */
+/*     MOBILE VIEW         */
+/* ======================= */
+@media (max-width: 600px) {
+  .slider-container {
+    padding: 16px;
+  }
+
+  .slide {
+    grid-row-gap: 14px;
+    grid-column-gap: 14px;
+  }
+
+  .card {
+    padding: 12px 8px;
+  }
+
+  .card img {
+    width: 55px;
+    height: 55px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+}
+
+/* ======================= */
+/*     LAPTOP VIEW         */
+/* ======================= */
+@media (min-width: 900px) {
+  .slider-container {
+    padding: 25px;
+  }
+
+  .slide {
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+  }
+
+  .card {
+    padding: 20px 15px;
+  }
+
+  .card img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .card p {
+    font-size: 15px;
+  }
+}
 
 
 
