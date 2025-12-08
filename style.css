@@ -288,6 +288,7 @@ h4 a{
   align-items: center;
   color:#fff;
   padding:5px;
+  padding-left:20px;
   font-size:17px;
   font-weight:450;
   position:relative;
@@ -344,7 +345,7 @@ h4 a{
   text-decoration:none;
   color:#fff;
   padding-top:10px;
-  padding-left:10px;
+  padding-left:75px;
   list-style-type: none;
   height:30px;
 }
