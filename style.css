@@ -5,7 +5,11 @@
 body{
   margin-top:5px;
 }
-
+.shift{
+  display:flex;
+  justify-self:right;
+  padding-right:20px;
+}
 #logo-adv{
   height:50px;
   width:100px;
